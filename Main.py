@@ -73,16 +73,83 @@ class Human:
         self.hunger -= 4
 
     def chill(self):
-        pass
+        self.happiness += 10
+        self.hunger -= 1
+        self.home.mess += 8
+
+    def clean_home(self):
+        self.home.mess = 0
+        self.hunger -= 2
+        self.happiness -= 5
+
+    def car_repair(self):
+        self.car.repair()
+        self.money -= 50
 
     def days_indexes(self, day):
-        pass
+        day = f"Today is day {day} of {self.name}'s life."
+        print(f"{day:-^50}", "\n")#######
+        print(f"{day}") #######
+        human_params =  self.name + "s' parameters"
+        print(f"{human_params:=^50}", "\n")
+        print(f"Money = {self.money}")
+        print(f"Hunger = {self.hunger}")
+        print(f"Happiness = {self.happiness}")
+        home_params =  self.name + "'s Homes' parameters"
+        print(f"{home_params:~^50}", "\n")
+        print(f"Food = {self.home.food}")
+        print(f"Mess = {self.home.mess}")
+        car_params =  self.car.brand + "s' parameters"
+        print(f"{car_params::^50}", "\n")
+        print(f"Car Fuel = {self.car.fuel}")
+        print(f"Car Durability = {self.car.durability}")
 
     def is_alive(self):
-        pass
+        if self.happiness <= 0:
+            print("Depression...")
+            return False
+        if self.hunger <= 0:
+            print("Starvation...")
+            return False
+        if self.money < -500:
+            print("Bankrupt...")
+            return False
 
     def live(self, day):
-        pass
+        if self.is_alive == False:
+            return False
+        if self.home is None:
+            self.get_home()
+            print("Settled in the house")
+        if self.car is None:
+            self.get_car()
+            print(f"I bought a {self.car.brand}")
+        if self.job is None:
+            self.get_job()
+            print(f"I'm going to be a {self.job.job} with the salary of ${self.job.salary}")
+
+        self.days_indexes(day)
+
+        dice = random.randint(1,4)
+        if dice == 1:
+            self.eat()
+        if dice == 2:
+            self.chill()
+        if dice == 3:
+            self.work()
+        if dice == 4:
+            self.clean_home()
+
+        if self.hunger <= 20:
+            self.eat()
+            print("I will go eat")
+            #make go shopping
+        if self.happiness <= 15:
+            self.chill()
+            print("I will go chill")
+        if self.money <= 50:
+            self.work()
+            print("I will go work")
 
 
 
@@ -149,10 +216,7 @@ brands_of_car = {
 
 
 nick = Human("Nick")
-jeb = Human("Jeb")
 
-car1 = Car(brands_of_car)
-car2 = Car(brands_of_car)
-
-print(car1.brand)
-print(car2.brand)
+for day in range(1, 8):
+    if nick.live(day) == False:
+        break
