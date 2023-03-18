@@ -46,24 +46,13 @@ class Human:
             print("I bought fuel")
             self.money -= 100
             self.car.pump_gas()
-        if self.car.drive():
+        if not self.drive_car():
             return
-        else:
-            if self.car.fuel < self.car.consumption:
-                items = "fuel"
-            else:
-                self.car.repair()
-                return
 
         if items == "food":
             print("Bought food")
             self.money -= 50
             self.home.food += 50
-        elif items == "fuel":
-            print("I bought fuel")
-            self.money -= 100
-            self.car.pump_gas()
-
 
     def work(self):
         if self.car.drive():
@@ -128,29 +117,40 @@ class Human:
             self.get_job()
             print(f"I'm going to be a {self.job.job} with the salary of ${self.job.salary}")
 
-        self.days_indexes(day)
-
-        dice = random.randint(1,4)
-        if dice == 1:
-            self.eat()
-        if dice == 2:
-            self.chill()
-        if dice == 3:
-            self.work()
-        if dice == 4:
-            self.clean_home()
-
         if self.hunger <= 20:
             self.eat()
             print("I will go eat")
-            #make go shopping
-        if self.happiness <= 15:
-            self.chill()
-            print("I will go chill")
+            # make go shopping
         if self.money <= 50:
             self.work()
             print("I will go work")
+        if self.happiness <= 25:
+            self.chill()
+            print("I will go chill")
+        if self.home.mess >= 50:
+            self.clean_home()
+            print("I will go clean my house")
 
+
+
+        dice = random.randint(1,5)
+        if dice == 1:
+            self.eat()
+            print("dI will go eat")
+        if dice == 2:
+            self.chill()
+            print("dI will go chill")
+        if dice == 3:
+            self.work()
+            print("dI will go work")
+        if dice == 4:
+            self.clean_home()
+            print("dI will go clean my house")
+        if dice == 5:
+            self.shopping()
+            print("dI will go shopping")
+
+        self.days_indexes(day)
 
 
 class Car:
@@ -164,7 +164,7 @@ class Car:
 
     def drive(self):
         if self.fuel >= self.consumption and self.durability > 0:
-            self.fuel -= 1
+            self.fuel -= self.consumption
             self.durability -= 1
             return True
         else:
@@ -173,12 +173,11 @@ class Car:
 
     def repair(self):
         self.durability = self.max_durability
-        #rapair only 20+ durability
+        # rapair only 20+ durability
 
     def pump_gas(self):
         self.fuel = self.max_fuel
-        #calculate the cost depending on galons
-
+        # calculate the cost depending on galons
 
 
 class Job:
@@ -217,6 +216,6 @@ brands_of_car = {
 
 nick = Human("Nick")
 
-for day in range(1, 8):
+for day in range(1, 51):
     if nick.live(day) == False:
         break
